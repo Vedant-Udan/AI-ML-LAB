@@ -1,3 +1,0 @@
-Image 0: Predicted Label - 0.0
-Image 0: Predicted Label - 0.0
-Image 0: Predicted Label - 0.0

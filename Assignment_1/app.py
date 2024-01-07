@@ -3,7 +3,7 @@ import streamlit as st
 from PIL import Image
 
 import torch
-from model_architecture import SimpleCNN
+from utils import SimpleCNN, save_image_and_prediction, center
 from  torchvision import  transforms
 
 
@@ -19,6 +19,7 @@ def predict(raw_image):
         [
             transforms.Resize((28, 28)),
             transforms.ToTensor(),
+            transforms.Normalize((0.1307,), (0.3081,))
         ]
     )
     image = Image.open(raw_image)
@@ -29,30 +30,6 @@ def predict(raw_image):
     a=model(image)
     return int(torch.argmax(a))
 
-
-# centering the image
-def center(image, caption) : 
-    col1, col2, col3 = st.columns([1.5,2,1.5])
-
-    with col1:
-        st.write("")
-
-    with col2:
-        st.image(image, caption=caption, width= 150 )
-
-    with col3:
-        st.write("")
-
-def save_image_and_prediction(image, prediction, destination_folder, index):
-
-    image_path = os.path.join(destination_folder, f"image_{index}.png")
-    pil_image = Image.open(image)
-    pil_image.save(image_path)
-
-    # Save the prediction
-    prediction_path = os.path.join(destination_folder, "predictions.txt")
-    with open(prediction_path, "a") as f:
-        f.write(f"Image {index}: Predicted Label - {prediction}\n")   
 
 st.title("AI/ML Lab 1 - Digit Recognition")
 image = Image.open("image.jpg")
